@@ -53,21 +53,26 @@ void clean_input(char *in, char *out)
 
 char *read_input(void)
 {
-	char *input = custom_getline(STDIN_FILENO);
+	char *input = NULL;
 	char *output = NULL;
+	size_t input_size = 0;
+	ssize_t read;
 
-	if (input == NULL)
+	read = getline(&input, &input_size, stdin);
+	if (read == -1)
 	{
-		return (NULL);
+		free(input);
+		exit(EXIT_SUCCESS);
 	}
-
-	output = malloc(strlen(input) + 1);
+	input[strcspn(input, "\n")] = '\0';
+	output = malloc(sizeof(char) * (strlen(input) + 1));
 	if (output == NULL)
 	{
+		free(input);
 		return (NULL);
 	}
 	clean_input(input, output);
-
+	free(input);
 	return (output);
 }
 
