@@ -58,7 +58,7 @@ char *read_input(void)
 	size_t input_size = 0;
 	ssize_t read;
 
-	read = getline(&input, &input_size, stdin);
+	read = custom_getline(&input, &input_size, stdin);
 	if (read == -1)
 	{
 		free(input);

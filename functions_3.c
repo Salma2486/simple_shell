@@ -21,6 +21,9 @@ int check_for_path(char *cmd)
  * Return: 0 
  */
 ssize_t custom_getline(char **lineptr, size_t *n, FILE *stream) {
+	static char custom_buffer[BUFFER_SIZE];
+	static int custom_buffer_pos = 0;
+	static int custom_buffer_size = 0;
 	int i = 0;
 	unsigned int line_length = 0;
 
