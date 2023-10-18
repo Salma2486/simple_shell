@@ -17,8 +17,11 @@ int main(void)
 			input = read_input();
 			if (input == NULL)
 				continue;
-			if (strcmp(input, "exit") == 0)
+			if (check_for_exit(input) == 0)
+			{
+				exit_status = handle_exit(input);
 				break;
+			}
 			if (strcmp(input, "env") == 0)
 				print_environment();
 			else if (strlen(input) > 0)
@@ -30,8 +33,11 @@ int main(void)
 			input = read_input();
 			if (input == NULL)
 				break;
-			if (strcmp(input, "exit") == 0)
+			if (check_for_exit(input) == 0)
+			{
+				exit_status = handle_exit(input);
 				break;
+			}
 			if (strcmp(input, "env") == 0)
 				print_environment();
 			else if (strlen(input) > 0)
