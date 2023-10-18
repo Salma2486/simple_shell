@@ -76,7 +76,19 @@ char *read_input(void)
 	return (output);
 }
 
-
+/**
+ *check_for_path - it check if it in current path or not 
+ *@cmd: input 
+ *Return: 0 or 1
+ */
+int check_for_path(char *cmd)
+{
+	if(cmd[0] == '.' && cmd[1] == '/')
+		return 1;
+	else if((cmd[0] == '.' && cmd[1] == '.' && cmd[2] == '/') || cmd[0] == '/')
+		return 1;
+	else return 0;
+}
 /**
  *get_location - This is the entry point of the code
  *@command: lkdfm
@@ -88,39 +100,53 @@ char *get_location(char *command)
 	int command_length, directory_length;
 	struct stat buffer;
 
-	path = getenv("PATH");
-	if (path)
+	if(check_for_path(command) == 0)
 	{
-		path_copy = strdup(path);
-		command_length = strlen(command);
-		path_token = strtok(path_copy, ":");
-		while (path_token != NULL)
+		path = getenv("PATH");
+		if (path)
 		{
-			directory_length = strlen(path_token);
-			file_path = malloc(command_length + directory_length + 2);
-			strcpy(file_path, path_token);
-			strcat(file_path, "/");
-			strcat(file_path, command);
-			strcat(file_path, "\0");
-			if (stat(file_path, &buffer) == 0)
+			path_copy = strdup(path);
+			command_length = strlen(command);
+			path_token = strtok(path_copy, ":");
+			while (path_token != NULL)
 			{
-				free(path_copy);
-				return (file_path);
+				directory_length = strlen(path_token);
+				file_path = malloc(command_length + directory_length + 2);
+				strcpy(file_path, path_token);
+				strcat(file_path, "/");
+				strcat(file_path, command);
+				strcat(file_path, "\0");
+				if (stat(file_path, &buffer) == 0)
+				{
+					free(path_copy);
+					return (file_path);
+				}
+				else
+				{
+					free(file_path);
+					path_token = strtok(NULL, ":");
+				}
 			}
-			else
-			{
-				free(file_path);
-				path_token = strtok(NULL, ":");
-			}
+		}
+	}
+	else
+	{
+		if (path_copy != NULL)
+		{
+			free(path_copy);
+		}
+		if (stat(command, &buffer) == 0)
+		{
+			return (command);
+		}
+		else
+		{
+			return (NULL);
 		}
 	}
 	if (path_copy != NULL)
 	{
 		free(path_copy);
-	}
-	if (stat(command, &buffer) == 0)
-	{
-		return (command);
 	}
 	return (NULL);
 }
