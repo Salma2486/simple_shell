@@ -58,13 +58,26 @@ char *read_input(void)
 	size_t input_size = 0;
 	ssize_t read;
 
-	read = getline(&input, &input_size, stdin);
-	if (read == -1)
+	while (1)
 	{
-		free(input);
-		exit(EXIT_SUCCESS);
+		read = getline(&input, &input_size, stdin);
+		if (read == -1)
+		{
+			free(input);
+			exit(EXIT_SUCCESS);
+		}
+
+		input[strcspn(input, "\n")] = '\0';
+
+		if (input[0] == '#')
+		{
+			free(input);
+			return (strdup(""));
+		}
+
+		break;
 	}
-	input[strcspn(input, "\n")] = '\0';
+
 	output = malloc(sizeof(char) * (strlen(input) + 1));
 	if (output == NULL)
 	{
@@ -75,6 +88,7 @@ char *read_input(void)
 	free(input);
 	return (output);
 }
+
 
 /**
  *get_location - This is the entry point of the code
