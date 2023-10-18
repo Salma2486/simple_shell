@@ -20,17 +20,26 @@ void clean_input(char *in, char *out)
 	int i = 0;
 	int cd =  0;
 
+	if (*in == '#')
+	{
+		out[i] = '\0';
+		return; }
 	while (*in != '\0')
 	{
 		if (*in == '#')
 		{
-			break;
-		}
+			in--;
+			if (*in == ' ')
+			{
+				in++;
+				break; }
+			in++;
+			cd = 1;
+			out[i++] = *in; }
 		else if (*in != ' ')
 		{
 			cd  = 1;
-			out[i++] = *in;
-		}
+			out[i++] = *in; }
 		else if (cd == 1)
 		{
 			while (*in != '\0')
