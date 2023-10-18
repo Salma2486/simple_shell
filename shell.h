@@ -7,6 +7,8 @@
 #include <sys/wait.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#define BUFFER_SIZE 1024
+
 extern char **environ;
 void prompt(void);
 char *read_input(void);
