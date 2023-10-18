@@ -20,44 +20,46 @@ int check_for_path(char *cmd)
  * @stream: filename
  * Return: 0
  */
-ssize_t custom_getline(char **lineptr, size_t *n, FILE *stream)
+size_t custom_getline(char **lineptr, size_t *n, FILE *stream)
 {
-	static char custom_buffer[BUFFER_SIZE];
-	static int custom_buffer_pos;
-	static int custom_buffer_size;
-	int i = 0;
 	unsigned int line_length = 0;
+	int i;
+	char *new_lineptr;
 
-	if (custom_buffer_pos >= custom_buffer_size)
+	if (*lineptr == NULL || *n == 0)
 	{
-		custom_buffer_size = read(fileno(stream), custom_buffer, BUFFER_SIZE);
-		custom_buffer_pos = 0;
-		if (custom_buffer_size <= 0)
-		{
-			return (custom_buffer_size);
+		*lineptr = (char *)malloc(BUFFER_SIZE);
+		*n = BUFFER_SIZE;
+	}
+	while (1)
+	{
+		if (pos >= custom_buffer_size)
+		{ custom_buffer_size = read(fileno(stream), custom, BUFFER_SIZE);
+			pos = 0;
+			if (custom_buffer_size <= 0)
+			{
+				if (line_length == 0)
+					return (-1);
+				break; }
 		}
-	}
 
-	for (i = custom_buffer_pos; i < custom_buffer_size; i++)
-	{
-		if (custom_buffer[i] == '\n')
-			break;
-	}
-
-	line_length = i - custom_buffer_pos;
-
-	if (*n < line_length + 1)
-	{
-		*n = line_length + 1;
-		*lineptr = (char *)realloc(*lineptr, *n);
-		if (*lineptr == NULL)
-			return (-1);
-	}
-
-	strncpy(*lineptr, custom_buffer + custom_buffer_pos, line_length);
+		for (i = pos; i < custom_buffer_size; i++)
+		{
+			if (custom[i] == '\n')
+			{i++;
+				break; }
+		}
+		if (line_length + i - pos + 1 > *n)
+		{ *n = line_length + i - pos + 1;
+			new_lineptr = (char *)realloc(*lineptr, *n);
+			if (new_lineptr == NULL)
+				return (-1);
+			*lineptr = new_lineptr; }
+		strncpy(*lineptr + line_length, custom + pos, i - pos);
+		line_length += i - pos;
+		pos = i;
+		if (custom[i - 1] == '\n')
+			break; }
 	(*lineptr)[line_length] = '\0';
-
-	custom_buffer_pos = i + 1;
-
 	return (line_length);
 }
