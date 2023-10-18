@@ -133,17 +133,29 @@ char *get_location(char *command)
  */
 int extract_args(char *in, char *args[16])
 {
-	const char delm[2] = " ";
 	int i = 0;
-	char *token;
+	char *token = in;
 
-	token = strtok(in, delm);
-	while (token != NULL)
+	while (*in != '\0' && i < 16)
 	{
-		args[i] = malloc(sizeof(char) * (strlen(token) + 1));
-		strcpy(args[i++], token);
-		token = strtok(NULL, delm);
+		while (*in != ' ' && *in != '\0')
+		{
+			in++;
+		}
+		if (token != in)
+		{
+			args[i] = malloc(in - token + 1);
+			strncpy(args[i], token, in - token);
+			args[i][in - token] = '\0';
+			i++;
+		}
+		if (*in != '\0')
+		{
+			in++;
+			token = in;
+		}
 	}
+
 	args[i] = NULL;
 	return (i);
 }
