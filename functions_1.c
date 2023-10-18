@@ -50,23 +50,28 @@ void clean_input(char *in, char *out)
  *
  *Return:0 Success
  */
+
 char *read_input(void)
 {
+	char *input = custom_getline(STDIN_FILENO);
 	char *output = NULL;
-	char *line = custom_getline(STDIN_FILENO);
 
-	if (line == NULL)
+	if (input == NULL)
 	{
-		return NULL;
+		return (NULL);
 	}
-	output = malloc(strlen(line) + 1);
+
+	output = malloc(strlen(input) + 1);
 	if (output == NULL)
 	{
-		return NULL;
+		return (NULL);
 	}
-	clean_input(line, output);
-	return output;
+	clean_input(input, output);
+
+	return (output);
 }
+
+
 /**
  *get_location - This is the entry point of the code
  *@command: lkdfm
