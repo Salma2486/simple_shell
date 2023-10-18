@@ -25,9 +25,8 @@ int main(void)
 			else
 				break;
 		}
-		if (check_for_exit(input) == 0)
+		if (strcmp(input, "exit") == 0)
 		{
-			exit_status = handle_exit(input);
 			break;
 		}
 		if (strcmp(input, "env") == 0)
