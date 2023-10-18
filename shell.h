@@ -22,4 +22,5 @@ void execute_free(char *i, char *c, char *ar[16], int len, unsigned int f);
 int execute(char *cmd);
 char *custom_getline(int fd);
 int check_for_path(char *cmd);
+ssize_t custom_getline(char **lineptr, size_t *n, FILE *stream);
 #endif
