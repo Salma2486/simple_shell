@@ -8,44 +8,39 @@ int main(void)
 {
 	char *input = NULL;
 	int exit_status = 0;
+	int is_interactive = isatty(STDIN_FILENO);
 
 	while (1)
 	{
-		if (isatty(STDIN_FILENO))
+		if (is_interactive)
 		{
 			prompt();
-			input = read_input();
-			if (input == NULL)
-				continue;
-			if (check_for_exit(input) == 0)
-			{
-				exit_status = handle_exit(input);
-				break;
-			}
-			if (strcmp(input, "env") == 0)
-				print_environment();
-			else if (strlen(input) > 0)
-				execute(input);
-			free(input);
 		}
-		else
+		input = read_input();
+
+		if (input == NULL)
 		{
-			input = read_input();
-			if (input == NULL)
+			if (is_interactive)
+				continue;
+			else
 				break;
-			if (check_for_exit(input) == 0)
-			{
-				exit_status = handle_exit(input);
-				break;
-			}
-			if (strcmp(input, "env") == 0)
-				print_environment();
-			else if (strlen(input) > 0)
-				exit_status = execute(input);
+		}
+		if (check_for_exit(input) == 0)
+		{
+			exit_status = handle_exit(input);
+			break;
+		}
+		if (strcmp(input, "env") == 0)
+			print_environment();
+
+		else if (strlen(input) > 0)
+			exit_status = execute(input);
+		if (!is_interactive)
+		{
 			if (exit_status != 0)
 				break;
-			free(input);
 		}
+		free(input);
 	}
 	free(input);
 	if (exit_status != 0)
