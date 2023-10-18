@@ -22,7 +22,11 @@ void clean_input(char *in, char *out)
 
 	while (*in != '\0')
 	{
-		if (*in != ' ')
+		if (*in == '#')
+		{
+			break;
+		}
+		else if (*in != ' ')
 		{
 			cd  = 1;
 			out[i++] = *in;
