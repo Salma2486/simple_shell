@@ -20,6 +20,5 @@ void print_environment(void);
 void execute_free(char *i, char *c, char *ar[16], int len, unsigned int f);
 int execute(char *cmd);
 int check_for_path(char *cmd);
-size_t custom_getline(char **lineptr, size_t *n, FILE *stream);
 
 #endif
