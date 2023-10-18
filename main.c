@@ -14,7 +14,7 @@ int main(void)
 		if (isatty(STDIN_FILENO))
 		{
 			prompt();
-			input = read_input();
+			input = custom_getline(STDIN_FILENO);
 			if (input == NULL)
 				continue;
 			if (strcmp(input, "exit") == 0)
@@ -27,7 +27,7 @@ int main(void)
 		}
 		else
 		{
-			input = read_input();
+			input = custom_getline(STDIN_FILENO);
 			if (input == NULL)
 				break;
 			if (strcmp(input, "exit") == 0)
