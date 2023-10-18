@@ -8,6 +8,9 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #define BUFFER_SIZE 1024
+static char custom_buffer[BUFFER_SIZE];
+static int custom_buffer_pos = 0;
+static int custom_buffer_size = 0;
 
 extern char **environ;
 void prompt(void);
