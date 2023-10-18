@@ -22,6 +22,9 @@ int check_for_path(char *cmd)
  */
 size_t custom_getline(char **lineptr, size_t *n, FILE *stream)
 {
+	int pos;
+	int custom_buffer_size;
+	char custom[BUFFER_SIZE];
 	unsigned int line_length = 0;
 	int i;
 	char *new_lineptr;
@@ -29,8 +32,7 @@ size_t custom_getline(char **lineptr, size_t *n, FILE *stream)
 	if (*lineptr == NULL || *n == 0)
 	{
 		*lineptr = (char *)malloc(BUFFER_SIZE);
-		*n = BUFFER_SIZE;
-	}
+		*n = BUFFER_SIZE; }
 	while (1)
 	{
 		if (pos >= custom_buffer_size)
@@ -40,15 +42,12 @@ size_t custom_getline(char **lineptr, size_t *n, FILE *stream)
 			{
 				if (line_length == 0)
 					return (-1);
-				break; }
-		}
-
+				break; } }
 		for (i = pos; i < custom_buffer_size; i++)
 		{
 			if (custom[i] == '\n')
 			{i++;
-				break; }
-		}
+				break; } }
 		if (line_length + i - pos + 1 > *n)
 		{ *n = line_length + i - pos + 1;
 			new_lineptr = (char *)realloc(*lineptr, *n);

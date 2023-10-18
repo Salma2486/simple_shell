@@ -8,9 +8,6 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #define BUFFER_SIZE 1024
-int pos;
-int custom_buffer_size;
-char custom[BUFFER_SIZE];
 extern char **environ;
 void prompt(void);
 char *read_input(void);
@@ -24,4 +21,9 @@ void execute_free(char *i, char *c, char *ar[16], int len, unsigned int f);
 int execute(char *cmd);
 int check_for_path(char *cmd);
 size_t custom_getline(char **lineptr, size_t *n, FILE *stream);
+int check_for_exit(char *input);
+int handle_exit(char *input);
+int is_number(char *in);
+void print_exit_error(char *msg, char *args[16]);
+
 #endif
